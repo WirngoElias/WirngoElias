@@ -1,0 +1,55 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-image: url(test.webp);
+    background-size: cover;
+    height: 400px;
+    width: 100%;
+}
+.overall{
+   
+   border: 1px solid black;
+   height: 280px;
+   width: 27%;
+   margin-left: 450px;
+   margin-top: 70px;
+   background-color: aqua;
+   border-radius: 30px;
+}
+h1{
+    text-align: center;
+    font-weight: bold;
+    text-decoration-line: underline;
+    
+}
+   .text{
+    margin-right: 250px;
+    text-align: center;
+    
+   }
+
+.A{
+    margin-left: 20px;
+    padding-top: 20px;
+}
+.B{
+   margin-left: 20px;
+   padding-top: 30px;
+}
+.C{
+
+    margin-left: 20px;
+    padding-top: 30px;
+}
+.D{
+
+    margin-left: 20px;
+    padding-top: 30px;
+}
+.E{
+    padding-top: 30px;
+    margin-left: 20px;
+}

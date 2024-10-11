@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Form</title>
+    <link rel="stylesheet" href="./css styles/Enroll Now.css">
+</head>
+<body>
+    <a href="course.html" class="home-btn">Back to courses</a>
+    <div class="container">
+        <h1>Enrollment Form</h1>
+        <form >
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="course">Course:</label>
+            <select id="course" name="course" required>
+                <option value="web_design">Web Design</option>
+                <option value="graphic_design">Graphic Design</option>
+                <option value="video_editing">Video Editing</option>
+                <option value="online_marketing">Online Marketing</option>
+                <!-- <option value="cyber_security">Cyber security</option> -->
+            </select>
+
+            <label for="account">Account Details:</label>
+            <input type="text" id="account" name="account" required>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        
+    </div>
+</body>
+</html>

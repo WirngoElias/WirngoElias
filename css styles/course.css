@@ -1,0 +1,343 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box ;
+}
+/* start of navigation bar */
+.head{
+    background-color: rgb(255, 255, 255);
+    width: 100%; 
+    height: 70px;
+}
+
+body{
+    background-color: gray;
+}
+
+.logo{
+    padding-top: 10px;
+    padding-left: 10px;
+    color: black;
+}
+
+.rnavbar ul{
+float: right;
+display: flex;
+list-style-type: none;
+
+margin-top:-28px;
+color: white;
+}
+.rnavbar ul a{
+    padding: 10px 20px;
+}
+.rnavbar a{
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+    font-size: 25px;
+    font-weight: bold;
+     
+}
+a:hover{
+    color: white;
+    transition-duration: 3s;
+}
+/* end of navigation bar */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: gray;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    
+}
+
+.container h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.course {
+    background: #fff;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course h2 {
+    color: black;
+}
+
+.course p {
+    line-height: 1.6;
+}
+
+.course ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.course ul li {
+    background: #e4e4e4;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 3px;
+}
+.course ul li a{
+    text-decoration: none;
+}
+.enroll-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+footer{
+    background-color: rgb(46, 43, 43);
+    padding: 20px 0;
+    margin-top: 30px;
+    border-top-right-radius: 40px;
+    border-top-left-radius: 40px;
+}
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+h3{
+    color: aliceblue;
+}
+.footer-column {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.footer-column h3 {
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 5px;
+}
+
+.footer-column ul li a {
+  text-decoration: none;
+  color: #d2c7c7;
+}
+.footer-column ul li a .fa{
+  margin-right: 10px;
+}
+
+.footer-column form {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-column form input,
+.footer-column form textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.footer-column form button {
+  padding: 10px;
+  background-color: #dae4ed;
+  color: rgb(44, 43, 43);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.footer-column form button:hover {
+  background-color: #0056b3;
+}
+.footer-column{
+    margin-left: 90px;
+}
+/* .enroll-btn:hover {
+    background-color: #0056b3;
+} */
+/* .categories{
+    border: 2px solid  black;
+    width: 200px;
+    height: 400px;
+    margin-top: 80px;
+    padding: 9px;
+    margin-left: 10px;
+}
+.A button{
+    background-color: aqua;
+    margin-top: 30px;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+.B button{
+    background-color: aqua;
+    padding-top: 40px;
+    border-radius: 10px;
+    padding: 5px 22px; 
+    margin-top: 30px; 
+}
+.C button{
+    background-color: aqua;
+    padding-top: 40px;
+    border-radius: 10px;
+    padding: 5px 28px; 
+    margin-top: 30px;  
+}
+/* .categories button{
+    background-color: aqua;
+    padding-top: 40px;
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+} */
+/* .text h2{
+    color: black;
+    font-weight: bolder;
+}
+h2{
+    text-align: center;
+    
+}
+body{
+   
+    border-radius: 50px;
+}
+.firstbox1A{
+    background-color: #1a0000;
+    color: white;
+    border: 1px solid;
+    margin: 10px;
+    height: 150px;
+    width: 250px;
+}
+.secondboxA{
+    background-color: #1a0000;
+    color: white;
+    border: 1px solid;
+    height: 150px;
+    width: 250px;
+    margin: 10px;
+}
+.thirdboxA{
+    background-color: #1a0000;
+    color: white;
+    border: 1px solid;
+    height: 150px;
+    width: 250px;
+    margin: 10px;
+}
+.fourthboxA{
+    background-color: #1a0000;
+    color: white;
+    border: 1px solid;
+    height: 150px;
+    width: 250px;
+    margin: 10px;
+}
+.firstboxB{
+    background-color: #1a0000;
+    color: white;
+    border: 1px solid;
+    margin: 10px;
+    height: 150px;
+    width: 250px;
+
+}
+.secondboxB{
+    background-color: #1a0000;
+    color: white;
+    border: 1px solid;
+    margin: 10px;
+    height: 150px;
+    width: 250px;
+}
+.courses{
+    display: flex;
+    margin-left: 450px;
+    padding: 10px;
+}
+.flex{
+    display: flex;
+    margin-left: 450px;
+    padding: 5px 10px;
+}
+.flex1{
+    display: flex;
+    margin-left: 450px;
+    padding: 5px 10px;
+}
+.firstbox1A button{
+    background-color: white;
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-top: 30px;
+    margin-left: 70px;
+}
+.secondboxA button{
+    background-color: white;
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-top: 30px;
+    margin-left: 70px; 
+}
+.thirdboxA button{
+    background-color: white;
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+
+.fourthboxA button{
+    background-color: white;
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+.firstboxB button{
+    background-color: white;
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+.secondboxB button{
+    background-color:white;
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+h2{
+    margin-left: 10px;
+}
+p{
+    margin-top: 5px;
+    margin-left: 80px;
+}  */
