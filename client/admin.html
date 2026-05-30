@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Admin Dashboard</title>
+
+  <link
+    rel="stylesheet"
+    href="./css/admin.css"
+  />
+
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <aside class="admin-sidebar">
+
+    <h2>VoteSecure</h2>
+
+    <ul>
+      <li>Create Election</li>
+      <li id="analyticsBtn">Analytics</li>
+       <li id="resultsBtn">Results</li>
+      <li id="adminLogout">Logout</li>
+    </ul>
+
+  </aside>
+
+  <main class="admin-main">
+
+    <div class="admin-topbar">
+
+      <h1>
+         Election Control Center
+      </h1>
+
+      <button id="themeToggle">
+        Toggle Theme
+      </button>
+
+    </div>
+
+    <!-- CREATE ELECTION -->
+
+    <section class="create-election">
+
+      <h2>Create Election</h2>
+
+      <form id="electionForm">
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Election Title"
+          required
+        />
+
+        <select id="group" required>
+
+          <option value="">
+            Select Group
+          </option>
+
+          <option>NAHPI</option>
+          <option>COLTECH</option>
+          <option>HITL</option>
+          <option>HICM</option>
+          <option>HTTC</option>
+          <option>HTTTC</option>
+          <option>FED</option>
+          <option>FS</option>
+          <option>FHS</option>
+          <option>FLPS</option>
+          <option>FA</option>
+          <option>FEMS</option>
+
+        </select>
+
+        <div class="candidate-builder">
+
+          <h3>Add Candidates</h3>
+
+         <div class="candidate-form-grid">
+
+            <input
+              type="text"
+              id="candidateName"
+              placeholder="Candidate Name"
+            />
+
+            <input
+              type="file"
+              id="candidatePhoto"
+              accept="image/*"
+            />
+
+            <input
+              type="file"
+              id="candidateVideo"
+              accept="video/*"
+            />
+
+          </div>
+          <textarea
+            id="candidateSpeech"
+            placeholder="Candidate Speech / Manifesto"
+          ></textarea>
+
+          <button
+            type="button"
+            id="addCandidateBtn"
+            class="add-candidate-btn"
+          >
+            Add Candidate
+          </button>
+
+        </div>
+
+        <div class="candidate-preview-section">
+
+          <h3>Candidate Queue</h3>
+
+          <div id="candidateList"></div>
+
+        </div>
+
+        <input
+          type="number"
+          id="duration"
+          placeholder="Duration in hours"
+          required
+        />
+
+        <button type="submit">
+          Create Election
+        </button>
+
+      </form>
+
+    </section>
+
+    <!-- STATISTICS -->
+
+    <!-- <section class="analytics">
+
+      <h2>Election Analytics</h2>
+
+      <div
+        id="statsContainer"
+        class="stats-grid"
+      >
+
+      </div>
+
+    </section> -->
+    <!-- AUDIT LOGS -->
+
+<section class="audit-section">
+
+  <div class="audit-header">
+
+    <h2>
+      Audit Logs
+    </h2>
+
+    <div class="audit-filters">
+
+      <input
+        type="text"
+        id="searchUser"
+        placeholder="Search matricule..."
+      />
+
+      <select id="filterAction">
+
+        <option value="ALL">
+          All Actions
+        </option>
+
+        <option value="VOTE_CAST">
+          Vote Cast
+        </option>
+
+        <option value="FRAUD_ATTEMPT">
+          Fraud Attempt
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+  <div class="table-wrapper">
+
+    <table class="audit-table">
+
+      <thead>
+
+        <tr>
+
+          <th>Action</th>
+
+          <th>User</th>
+
+          <th>Group</th>
+
+          <th>Details</th>
+
+          <th>Time</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="auditTableBody">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <div
+    id="pagination"
+    class="pagination"
+  >
+
+  </div>
+
+</section>
+  </main>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="./js/admin.js"></script>
+
+</body>
+</html>

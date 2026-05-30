@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Dashboard</title>
+
+  <link rel="stylesheet" href="./css/dashboard.css"/>
+</head>
+<body>
+
+<div class="dashboard">
+
+ <div class="sidebar">
+
+  <div class="user-info">
+
+    <h3 id="welcomeFullname"></h3>
+
+    <p id="welcomeGroup"></p>
+
+  </div>
+
+  <ul>
+    <li>Dashboard</li>
+    <li>Elections</li>
+    <li id="resultsBtn">Results</li>
+    <li id="logoutBtn">
+      Logout
+    </li>
+  </ul>
+
+</div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+
+      <div>
+        <h1 id="welcomeText"></h1>
+        <p id="groupText"></p>
+      </div>
+ 
+      <div class="live-status">
+        Election Portal
+      </div>
+
+    </div>
+
+    <section class="elections-section">
+
+      <h2>Active Elections</h2>
+
+      <div id="electionsContainer" class="elections-grid">
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="./js/dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+
+  <link rel="stylesheet" href="./css/auth.css"/>
+</head>
+<body>
+
+<div class="auth-container">
+
+  <form class="auth-form" id="registerForm">
+
+    <h2>Create Account</h2>
+
+    <input type="text" id="fullName" placeholder="Full Name" required/>
+
+    <input type="text" id="matricule" placeholder="Matricule" required/>
+
+    <input type="email" id="email" placeholder="Email" required/>
+
+    <input type="date" id="dob" required/>
+
+    <select id="group" required>
+
+      <option value="">Select School/Faculty</option>
+
+      <option>NAHPI</option>
+      <option>COLTECH</option>
+      <option>HITL</option>
+      <option>HICM</option>
+      <option>HTTC</option>
+      <option>HTTTC</option>
+
+      <option>FED</option>
+      <option>FS</option>
+      <option>FHS</option>
+      <option>FLPS</option>
+      <option>FA</option>
+      <option>FEMS</option>
+
+    </select>
+
+    <input type="password" id="password" placeholder="Password" required/>
+
+    <button type="submit">
+      Register
+    </button>
+
+    <p>
+      Already have an account?
+      <a href="login.html">Login</a>
+    </p>
+
+  </form>
+
+</div>
+
+<script src="./js/register.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+
+  <link rel="stylesheet" href="./css/auth.css"/>
+</head>
+<body>
+
+<div class="auth-container">
+
+  <form class="auth-form" id="loginForm">
+
+    <h2>Student Login</h2>
+
+    <input
+      type="text"
+      id="matricule"
+      placeholder="Matricule"
+      required
+    />
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      required
+    />
+    <div class="forgot-password">
+
+  <a href="./forgot-password.html">
+    Forgot Password?
+  </a>
+
+</div>
+    <button type="submit">
+      Login
+    </button>
+
+    <p>
+      No account?
+      <a href="register.html">Register</a>
+    </p>
+
+  </form>
+
+</div>
+
+<script src="./js/login.js"></script>
+
+</body>
+</html>
