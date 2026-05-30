@@ -1,0 +1,42 @@
+## Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+## Environment
+.env
+.env.local
+.env.*.local
+
+# Ignore env files anywhere and server-specific env
+*.env
+server/.env
+
+## IDEs and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+## Logs
+logs/
+*.log
+
+## Uploads / user data
+uploads/
+server/uploads/
+
+## Sensitive config (move secrets to environment variables)
+server/config/
+
+## Build outputs
+dist/
+build/
+
+## Coverage
+coverage/
+
+## Misc
+*.tgz
