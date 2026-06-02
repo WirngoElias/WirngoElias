@@ -1,5 +1,10 @@
 const loginForm = document.getElementById("loginForm");
 
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get("registered") === "1") {
+  showToast("Registration successful. You can now login.", 'success');
+}
+
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 

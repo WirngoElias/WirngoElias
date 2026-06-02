@@ -27,6 +27,9 @@ body.light{
   width:260px;
   background:#0f172a;
   padding:30px;
+  position:sticky;
+  top:0;
+  align-self:flex-start;
 }
 
 .admin-sidebar h2{

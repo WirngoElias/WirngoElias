@@ -110,9 +110,7 @@ form.addEventListener("submit", async (e) => {
 
     if(response.ok){
 
-      showToast("Registration successful", 'success');
-
-      window.location.href = "login.html";
+      window.location.href = "login.html?registered=1";
 
     }else{
       showToast(result.message || 'Registration failed', 'error');
