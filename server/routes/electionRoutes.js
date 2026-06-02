@@ -49,9 +49,20 @@ router.get(
 
             });
 
+            const now = new Date();
+            const isActive =
+              election.active && now <= election.endTime;
+
+            if (!isActive && election.active) {
+              election.active = false;
+              await election.save().catch(() => {});
+            }
+
             return {
 
               ...election.toObject(),
+
+              active: isActive,
 
               hasVoted:
               !!existingVote,
@@ -111,6 +122,15 @@ router.get(
 
       const formattedResults =
       elections.map((election) => {
+
+        const now = new Date();
+        const isActive =
+          election.active && now <= election.endTime;
+
+        if (!isActive && election.active) {
+          election.active = false;
+          election.save().catch(() => {});
+        }
 
         const totalVotes =
         election.candidates.reduce(
@@ -174,7 +194,7 @@ router.get(
           }
 
           // ACTIVE ELECTION
-          else if(election.active){
+          else if(isActive){
 
             if(leaders.length > 1){
 
@@ -215,7 +235,7 @@ router.get(
 
           group:election.group,
 
-          active:election.active,
+          active:isActive,
 
           startTime:
           election.startTime,

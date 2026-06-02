@@ -273,10 +273,9 @@ async function vote(
       }
     );
 
-    const data =
-    await response.json();
+    const data = await response.json();
 
-    alert(data.message);
+    showToast(data.message || 'Vote processed', response.ok ? 'success' : 'error');
 
     fetchElections();
 

@@ -61,9 +61,78 @@ router.post("/register", async (req, res) => {
     }
 
     // MATRICULE VALIDATION
+    // Format: UBa[YY][XX][NNN]
+    // UBa = prefix, YY = year (21+), XX = school code, NNN = 3 digits
+    const schoolCodes = {
+      "NAHPI": "NA",
+      "COLTECH": "CO",
+      "HITL": "HI",
+      "HICM": "HI",
+      "HTTC": "HT",
+      "HTTTC": "HT",
+      "FED": "FE",
+      "FS": "FS",
+      "FHS": "FH",
+      "FLPS": "FL",
+      "FA": "FA",
+      "FEMS": "FE",
+    };
+
+    // Check prefix
     if (!matricule.startsWith("UBa")) {
       return res.status(400).json({
-        message: "Invalid matricule format",
+        message: "Matricule must start with 'UBa'",
+      });
+    }
+
+    // Check total length (should be 10: UBa + 2 digits + 2 letters + 3 digits)
+    if (matricule.length !== 10) {
+      return res.status(400).json({
+        message: "Matricule must be exactly 10 characters (UBa + 2-digit year + 2-letter school code + 3 digits)",
+      });
+    }
+
+    const remaining = matricule.slice(3); // Remove 'UBa'
+
+    // Extract and validate year
+    const yearStr = remaining.slice(0, 2);
+    const year = parseInt(yearStr);
+
+    if (isNaN(year)) {
+      return res.status(400).json({
+        message: "Year must be numeric (e.g., 21 for 2021)",
+      });
+    }
+
+    if (year < 21) {
+      return res.status(400).json({
+        message: "Year of entry must be 21 or later (2021+). Lower years are not accepted.",
+      });
+    }
+
+    // Extract and validate school code
+    const schoolCode = remaining.slice(2, 4);
+    const expectedCode = schoolCodes[group];
+
+    if (!expectedCode) {
+      return res.status(400).json({
+        message: "Invalid school/faculty",
+      });
+    }
+
+    if (schoolCode !== expectedCode) {
+      return res.status(400).json({
+        message: `School code '${schoolCode}' does not match selected school/faculty. Expected '${expectedCode}' for ${group}`,
+      });
+    }
+
+    // Extract and validate numbers
+    const numbersStr = remaining.slice(4, 7);
+    const numbers = parseInt(numbersStr);
+
+    if (isNaN(numbers) || numbersStr.length !== 3) {
+      return res.status(400).json({
+        message: "Last 3 characters must be digits (000-999)",
       });
     }
 

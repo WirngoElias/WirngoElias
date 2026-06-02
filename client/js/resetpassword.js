@@ -45,15 +45,12 @@ async (e) => {
       }
     );
 
-    const data =
-    await response.json();
+    const data = await response.json();
 
-    alert(data.message);
+    showToast(data.message || 'Operation complete', response.ok ? 'success' : 'error');
 
     if(response.ok){
-
-      window.location.href =
-      "login.html";
+      window.location.href = "login.html";
     }
 
   } catch(error){

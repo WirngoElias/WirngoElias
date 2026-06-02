@@ -39,18 +39,13 @@ async (e) => {
       }
     );
 
-    const data =
-    await response.json();
+    const data = await response.json();
 
-    alert(data.message);
+    showToast(data.message || 'Check your email', response.ok ? 'success' : 'error');
 
-    localStorage.setItem(
-      "resetEmail",
-      email
-    );
+    localStorage.setItem("resetEmail", email);
 
-    window.location.href =
-    "reset-password.html";
+    window.location.href = "reset-password.html";
 
   } catch(error){
 

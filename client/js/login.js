@@ -27,15 +27,17 @@ loginForm.addEventListener("submit", async (e) => {
       const userRole = data.role || (data.user && data.user.role);
 
       if (userRole === "admin") {
+        showToast('Login successful', 'success');
         window.location.href = "admin.html";
       } else {
+        showToast('Login successful', 'success');
         window.location.href = "dashboard.html";
       }
     } else {
-      alert("Error: " + (data.message || "Invalid credentials"));
+      showToast("Error: " + (data.message || "Invalid credentials"), 'error');
     }
   } catch (error) {
     console.error("Fetch error:", error);
-    alert("Cannot connect to server. Is your backend running on port 5000?");
+    showToast("Cannot connect to server. Is your backend running on port 5000?", 'error');
   }
 });
