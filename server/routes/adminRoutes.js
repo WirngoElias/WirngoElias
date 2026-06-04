@@ -95,12 +95,12 @@ router.post(
 
             photo:
             photos[index]
-            ? `http://localhost:5000/uploads/${photos[index].filename}`
+            ? `/uploads/${photos[index].filename}`
             : null,
 
             video:
             videos[index]
-            ? `http://localhost:5000/uploads/${videos[index].filename}`
+            ? `/uploads/${videos[index].filename}`
             : null,
           })
         );

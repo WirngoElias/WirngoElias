@@ -264,7 +264,7 @@ formData.append(
     const response =
     await fetch(
 
-      "http://localhost:5000/api/admin/create-election",
+      buildApiUrl("/api/admin/create-election"),
 
       {
         method:"POST",
@@ -302,7 +302,7 @@ async function fetchStats(){
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/admin/stats",
+      buildApiUrl("/api/admin/stats"),
       {
         headers:{
           Authorization:token,
@@ -445,7 +445,7 @@ async function fetchAuditLogs(page = 1){
 
     const response = await fetch(
 
-      `http://localhost:5000/api/admin/audit-logs?page=${page}&limit=10&search=${search}&action=${action}`,
+      buildApiUrl(`/api/admin/audit-logs?page=${page}&limit=10&search=${search}&action=${action}`),
 
       {
         headers:{

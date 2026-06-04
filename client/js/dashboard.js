@@ -15,7 +15,7 @@ async function fetchProfile(){
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/auth/profile",
+      buildApiUrl("/api/auth/profile"),
       {
         headers:{
           Authorization:token,
@@ -70,7 +70,7 @@ async function fetchElections(){
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/elections/my-elections",
+      buildApiUrl("/api/elections/my-elections"),
       {
         headers:{
           Authorization:token,
@@ -166,7 +166,7 @@ function renderElections(elections){
               <img
                 src="${
                   candidate.photo ||
-                  "http://localhost:5000/uploads/default.png"
+                  buildApiUrl("/uploads/default.png")
                 }"
                 class="candidate-photo"
               />
@@ -255,7 +255,7 @@ async function vote(
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/vote/cast",
+      buildApiUrl("/api/vote/cast"),
       {
         method:"POST",
 

@@ -16,7 +16,7 @@ async function fetchAnalytics(){
 
     const response =
     await fetch(
-      "http://localhost:5000/api/admin/analytics",
+      buildApiUrl("/api/admin/analytics"),
       {
         headers:{
           Authorization:token

@@ -29,7 +29,7 @@ async function getProfile(){
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/auth/profile",
+      buildApiUrl("/api/auth/profile"),
       {
         headers:{
           Authorization:token,
@@ -85,7 +85,7 @@ async function fetchResults(){
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/elections/results",
+      buildApiUrl("/api/elections/results"),
       {
         headers:{
           Authorization:token,
