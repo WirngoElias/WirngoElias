@@ -4,76 +4,43 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="api-base-url" content="http://localhost:5000" />
-
-  <title>Dashboard</title>
-
+  <title>All Elections</title>
   <link rel="stylesheet" href="./css/dashboard.css"/>
   <link rel="stylesheet" href="./css/toast.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
 <div class="dashboard">
-
  <div class="sidebar">
-
   <div class="user-info">
-
     <h3 id="welcomeFullname"></h3>
-
     <p id="welcomeGroup"></p>
-
   </div>
-
   <ul>
     <li id="dashboardBtn"><i class="fa-solid fa-gauge"></i>Dashboard</li>
     <li id="electionsBtn"><i class="fa-solid fa-hand-holding-ballot"></i>Elections</li>
     <li id="resultsBtn"><i class="fa-solid fa-chart-simple"></i>Results</li>
     <li id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</li>
   </ul>
-
 </div>
-
   <main class="main-content">
-
     <div class="topbar">
-
-      <button id="navToggle" class="nav-toggle">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-
       <div>
-        <h1 id="welcomeText"></h1>
-        <p id="groupText"></p>
+        <h1><i class="fa-solid fa-hand-holding-ballot"></i> All Elections</h1>
+        <p class="page-subtitle">Newest elections first for your school or faculty.</p>
       </div>
- 
-      <div class="live-status">
-        Election Portal
-      </div>
-
+      <div class="live-status">Election Portal</div>
     </div>
-
     <section class="elections-section">
-
       <div class="section-header">
-        <h2>Active Elections</h2>
-        <button id="viewOldBtn" class="secondary-btn">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          View Old Elections
-        </button>
+        <h2><i class="fa-solid fa-list-check"></i> Election feed</h2>
       </div>
-
       <div id="electionsContainer" class="elections-grid"></div>
-
     </section>
-
   </main>
-
 </div>
-
 <script src="./js/config.js"></script>
 <script src="./js/toast.js"></script>
-<script src="./js/dashboard.js"></script>
-
+<script src="./js/elections.js"></script>
 </body>
 </html>

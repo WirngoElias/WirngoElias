@@ -7,7 +7,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   />
-  <meta name="api-base-url" content="https://your-backend.onrender.com" />
+  <meta name="api-base-url" content="http://localhost:5000" />
 
   <title>Admin Dashboard</title>
 
@@ -16,6 +16,7 @@
     href="./css/admin.css"
   />
   <link rel="stylesheet" href="./css/toast.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 <body>
@@ -27,10 +28,10 @@
     <h2>VoteSecure</h2>
 
     <ul>
-      <li>Create Election</li>
-      <li id="analyticsBtn">Analytics</li>
-       <li id="resultsBtn">Results</li>
-      <li id="adminLogout">Logout</li>
+      <li><i class="fa-solid fa-plus"></i>Create Election</li>
+      <li id="analyticsBtn"><i class="fa-solid fa-chart-pie"></i>Analytics</li>
+      <li id="resultsBtn"><i class="fa-solid fa-list-check"></i>Results</li>
+      <li id="adminLogout"><i class="fa-solid fa-right-from-bracket"></i>Logout</li>
     </ul>
 
   </aside>
@@ -39,9 +40,14 @@
 
     <div class="admin-topbar">
 
-      <h1>
-         Election Control Center
-      </h1>
+      <div class="topbar-left">
+        <button id="navToggle" class="nav-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1>
+           Election Control Center
+        </h1>
+      </div>
 
       <button id="themeToggle">
         Toggle Theme

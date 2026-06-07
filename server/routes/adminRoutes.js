@@ -148,6 +148,8 @@ router.post(
         startTime,
 
         endTime,
+
+        active:true,
       });
 
       res.status(201).json({

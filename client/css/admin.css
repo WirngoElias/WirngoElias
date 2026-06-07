@@ -30,6 +30,8 @@ body.light{
   position:sticky;
   top:0;
   align-self:flex-start;
+  transition:transform .3s ease, width .3s ease;
+  z-index:100;
 }
 
 .admin-sidebar h2{
@@ -62,6 +64,26 @@ body.light{
   justify-content:space-between;
   align-items:center;
   margin-bottom:40px;
+}
+
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+
+.nav-toggle{
+  display:none;
+  border:none;
+  background:#1e293b;
+  color:#38bdf8;
+  padding:12px 14px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.nav-toggle i{
+  font-size:1.1rem;
 }
 
 #themeToggle{
@@ -162,6 +184,35 @@ body.light{
   border-radius:14px;
 }
 
+@media(max-width:900px){
+
+  .nav-toggle{
+    display:inline-flex;
+  }
+
+  .admin-sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    transform:translateX(-100%);
+    width:260px;
+    z-index:200;
+  }
+
+  .admin-sidebar.open{
+    transform:translateX(0);
+  }
+
+  .admin-main{
+    padding:20px;
+  }
+
+  .admin-topbar{
+    justify-content:space-between;
+  }
+}
+
 @media(max-width:700px){
 
   .candidate-form-grid{
@@ -255,20 +306,17 @@ body.light{
 
 @media (max-width:900px){
 
-  .admin-layout,
-  .dashboard-layout{
+  .admin-layout{
     flex-direction:column;
   }
 
-  .admin-sidebar,
-  .sidebar{
+  .admin-sidebar{
     width:100%;
     height:auto;
     padding:1rem;
   }
 
-  .admin-main,
-  .main-content{
+  .admin-main{
     padding:1rem;
   }
 

@@ -25,6 +25,32 @@ document.getElementById("themeToggle")
   document.body.classList.toggle("light");
 });
 
+const navToggle = document.getElementById("navToggle");
+const adminSidebar = document.querySelector(".admin-sidebar");
+
+if (navToggle && adminSidebar) {
+  navToggle.addEventListener("click", () => {
+    adminSidebar.classList.toggle("open");
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 900) {
+      adminSidebar.classList.remove("open");
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      window.innerWidth <= 900 &&
+      adminSidebar.classList.contains("open") &&
+      !adminSidebar.contains(event.target) &&
+      !navToggle.contains(event.target)
+    ) {
+      adminSidebar.classList.remove("open");
+    }
+  });
+}
+
 document.getElementById("adminLogout")
 .addEventListener("click", () => {
 

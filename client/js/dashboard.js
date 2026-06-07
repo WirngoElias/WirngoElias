@@ -6,6 +6,76 @@ document.getElementById(
   "electionsContainer"
 );
 
+const viewOldBtn =
+document.getElementById(
+  "viewOldBtn"
+);
+
+function getPublicUrl(resourcePath) {
+  if (!resourcePath) {
+    return "";
+  }
+  if (
+    resourcePath.startsWith("http://") ||
+    resourcePath.startsWith("https://")
+  ) {
+    return resourcePath;
+  }
+  if (resourcePath.startsWith("/")) {
+    return buildApiUrl(resourcePath);
+  }
+  return resourcePath;
+}
+
+const electionsBtn =
+document.getElementById(
+  "electionsBtn"
+);
+
+const dashboardBtn =
+document.getElementById(
+  "dashboardBtn"
+);
+
+const navToggle =
+document.getElementById(
+  "navToggle"
+);
+
+const sidebar =
+document.querySelector(
+  ".sidebar"
+);
+
+if (navToggle && sidebar) {
+  navToggle.addEventListener(
+    "click",
+    () => {
+      sidebar.classList.toggle("open");
+    }
+  );
+
+  window.addEventListener(
+    "resize",
+    () => {
+      if (window.innerWidth > 900) {
+        sidebar.classList.remove("open");
+      }
+    }
+  );
+
+  document.addEventListener("click", (event) => {
+    if (
+      window.innerWidth <= 900 &&
+      sidebar.classList.contains("open") &&
+      !sidebar.contains(event.target) &&
+      !navToggle.contains(event.target)
+    ) {
+      sidebar.classList.remove("open");
+    }
+  });
+}
+
 // =========================
 // FETCH USER PROFILE
 // =========================
@@ -81,7 +151,15 @@ async function fetchElections(){
     const elections =
     await response.json();
 
-    renderElections(elections);
+    const activeElections =
+      elections.filter((election) => {
+        const now = new Date();
+        const startTime = new Date(election.startTime);
+        const endTime = new Date(election.endTime);
+        return now >= startTime && now <= endTime;
+      });
+
+    renderElections(activeElections);
 
   } catch (error) {
 
@@ -95,6 +173,16 @@ async function fetchElections(){
 // =========================
 
 function renderElections(elections){
+
+  if (elections.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>No active election is available right now.</p>
+        <p>You can still view old elections for your school or faculty.</p>
+      </div>
+    `;
+    return;
+  }
 
   container.innerHTML = "";
 
@@ -165,8 +253,9 @@ function renderElections(elections){
 
               <img
                 src="${
-                  candidate.photo ||
-                  buildApiUrl("/uploads/default.png")
+                  candidate.photo
+                    ? getPublicUrl(candidate.photo)
+                    : buildApiUrl("/uploads/default.png")
                 }"
                 class="candidate-photo"
               />
@@ -187,6 +276,29 @@ function renderElections(elections){
               </div>
 
             </div>
+
+            ${
+              candidate.video
+              ? `
+                <div class="candidate-video-wrapper">
+                  <video controls class="candidate-video">
+                    <source src="${getPublicUrl(candidate.video)}" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div class="candidate-video-controls">
+                    <button class="play-speech-btn" type="button" onclick="playSpeech(this)">
+                      <i class="fa-solid fa-circle-play"></i>
+                      Play Speech
+                    </button>
+                    <button class="fullscreen-btn" type="button" onclick="openFullScreen(this)">
+                      <i class="fa-solid fa-expand"></i>
+                      Fullscreen
+                    </button>
+                  </div>
+                </div>
+              `
+              : ""
+            }
 
             ${
               ended
@@ -243,6 +355,34 @@ function renderElections(elections){
 
   });
 }
+
+window.playSpeech = function(button){
+  const card = button.closest(".candidate-card");
+  const video = card?.querySelector("video");
+  if(video){
+    video.scrollIntoView({ behavior:"smooth", block:"center" });
+    video.play();
+  }
+};
+
+window.openFullScreen = function(button){
+  const card = button.closest(".candidate-card");
+  const video = card?.querySelector("video");
+  if(video){
+    if(video.requestFullscreen){
+      video.requestFullscreen();
+    } else if(video.webkitEnterFullscreen){
+      video.webkitEnterFullscreen();
+    } else if(video.webkitRequestFullscreen){
+      video.webkitRequestFullscreen();
+    } else if(video.mozRequestFullScreen){
+      video.mozRequestFullScreen();
+    } else if(video.msRequestFullscreen){
+      video.msRequestFullscreen();
+    }
+  }
+};
+
 // =========================
 // CAST VOTE
 // =========================
@@ -315,6 +455,24 @@ if(resultsBtn){
   );
 }
 
+if(electionsBtn){
+  electionsBtn.addEventListener("click", () => {
+    window.location.href = "elections.html";
+  });
+}
+
+if(viewOldBtn){
+  viewOldBtn.addEventListener("click", () => {
+    window.location.href = "old-elections.html";
+  });
+}
+
+if(dashboardBtn){
+  dashboardBtn.addEventListener("click", () => {
+    window.location.href = "dashboard.html";
+  });
+}
+
 // =========================
 // LOGOUT
 // =========================
@@ -338,13 +496,3 @@ if(logoutBtn){
     }
   );
 }
-document.getElementById(
-  "resultsBtn"
-).addEventListener(
-  "click",
-  () => {
-
-    window.location.href =
-    "result.html";
-  }
-);

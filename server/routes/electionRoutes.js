@@ -51,10 +51,11 @@ router.get(
 
             const now = new Date();
             const isActive =
-              election.active && now <= election.endTime;
+              now >= election.startTime &&
+              now <= election.endTime;
 
-            if (!isActive && election.active) {
-              election.active = false;
+            if (election.active !== isActive) {
+              election.active = isActive;
               await election.save().catch(() => {});
             }
 
@@ -87,6 +88,41 @@ router.get(
     }
   }
 );
+
+// GET ALL ELECTIONS ACROSS ALL GROUPS
+router.get(
+  "/all",
+  auth,
+  async (req,res) => {
+    try {
+      const elections = await Election.find().sort({ startTime: -1 });
+
+      const electionsWithStatus = elections.map((election) => {
+        const now = new Date();
+        const isActive =
+          now >= election.startTime &&
+          now <= election.endTime;
+
+        if (election.active !== isActive) {
+          election.active = isActive;
+          election.save().catch(() => {});
+        }
+
+        return {
+          ...election.toObject(),
+          active: isActive,
+        };
+      });
+
+      res.json(electionsWithStatus);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message:error.message,
+      });
+    }
+  }
+);
 // GET RESULTS
 router.get(
   "/results",
@@ -106,7 +142,7 @@ router.get(
       if(user.role === "admin"){
 
         elections =
-        await Election.find();
+        await Election.find().sort({ startTime: -1 });
 
       }
 
@@ -116,7 +152,7 @@ router.get(
         elections =
         await Election.find({
           group:user.group,
-        });
+        }).sort({ startTime: -1 });
 
       }
 
@@ -125,10 +161,11 @@ router.get(
 
         const now = new Date();
         const isActive =
-          election.active && now <= election.endTime;
+          now >= election.startTime &&
+          now <= election.endTime;
 
-        if (!isActive && election.active) {
-          election.active = false;
+        if (election.active !== isActive) {
+          election.active = isActive;
           election.save().catch(() => {});
         }
 

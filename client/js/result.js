@@ -96,7 +96,15 @@ async function fetchResults(){
     const results =
     await response.json();
 
-    allResults = results;
+    allResults = results.sort((a,b) => {
+      const aTime = a.startTime
+        ? new Date(a.startTime)
+        : new Date(a.endTime || 0);
+      const bTime = b.startTime
+        ? new Date(b.startTime)
+        : new Date(b.endTime || 0);
+      return bTime - aTime;
+    });
 
     // ADMIN FILTER
     if(currentUserRole === "admin"){
