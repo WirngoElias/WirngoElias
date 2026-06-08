@@ -11,7 +11,7 @@ const auth =
 require("../middleware/auth");
 
 const adminAuth =
-require("../middleware/adminAuth");
+require("../middleware/adminauth");
 
 const Election =
 require("../models/Election");
@@ -23,7 +23,7 @@ const Vote =
 require("../models/Vote");
 
 const AuditLog =
-require("../models/AuditLog");
+require("../models/Auditlog");
 
 const storage =
 multer.diskStorage({

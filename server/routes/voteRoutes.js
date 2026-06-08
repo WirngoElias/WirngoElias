@@ -15,7 +15,7 @@ const User =
 require("../models/User");
 
 const AuditLog =
-require("../models/AuditLog");
+require("../models/Auditlog");
 
 router.post(
   "/cast",
