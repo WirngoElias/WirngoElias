@@ -12,11 +12,16 @@ const app = express();
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 200,
   message: "Too many requests",
 });
+// when behind a proxy (Render, Heroku, etc.) enable trust proxy so
+// rateLimit uses the correct client IP address
+app.set('trust proxy', 1);
 
-app.use(limiter);
+// Apply the limiter only to API routes to avoid blocking static file
+// requests and platform health checks
+app.use('/api', limiter);
 app.use(cors());
 app.use(express.json());
 app.use(
