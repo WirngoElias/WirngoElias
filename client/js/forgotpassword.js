@@ -41,15 +41,16 @@ async (e) => {
 
     const data = await response.json();
 
-    showToast(data.message || 'Check your email', response.ok ? 'success' : 'error');
-
-    localStorage.setItem("resetEmail", email);
-
-    window.location.href = "reset-password.html";
+      if (response.ok) {
+        showToast(data.message || 'Check your email', 'success');
+        localStorage.setItem("resetEmail", email);
+        window.location.href = "reset-password.html";
+      } else {
+        showToast(data.message || 'Failed to send OTP', 'error');
+      }
 
   } catch(error){
-
-    console.log(error);
-
+    console.error('Forgot password request failed', error);
+    showToast('Network error. Please try again.', 'error');
   }
 });
