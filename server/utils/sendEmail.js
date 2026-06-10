@@ -1,3 +1,4 @@
+const dns = require("dns");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -12,7 +13,9 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false,
   },
-  family: 4,
+  lookup: (hostname, options, callback) => {
+    return dns.lookup(hostname, { family: 4, all: false }, callback);
+  },
   connectionTimeout: 10000,
   greetingTimeout: 10000,
   socketTimeout: 10000,
