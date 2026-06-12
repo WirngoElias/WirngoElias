@@ -90,12 +90,10 @@ function applyAdminView() {
     }
   }
 
-  if (subadminSection) {
-    subadminSection.style.display =
-      currentUser.role === "superadmin"
-        ? "block"
-        : "none";
-  }
+  // Do not show subadmin form on initial load; show when nav clicked
+  const createElectionSection = document.getElementById('createElectionSection');
+  if (createElectionSection) createElectionSection.style.display = 'block';
+  if (subadminSection) subadminSection.style.display = 'none';
 }
 
 function setButtonLoading(button, isLoading, text) {
