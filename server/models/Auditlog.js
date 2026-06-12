@@ -9,6 +9,14 @@ new mongoose.Schema({
     ref:"User",
   },
 
+  group:{
+    type:String,
+  },
+
+  role:{
+    type:String,
+  },
+
   action:{
     type:String,
     required:true,

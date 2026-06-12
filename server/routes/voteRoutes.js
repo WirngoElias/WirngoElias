@@ -58,6 +58,10 @@ router.post(
 
           userId:user._id,
 
+          group:user.group,
+
+          role:user.role,
+
           action:"FRAUD_ATTEMPT",
 
           details:
@@ -160,6 +164,10 @@ router.post(
       await AuditLog.create({
 
         userId:user._id,
+
+        group:user.group,
+
+        role:user.role,
 
         action:"VOTE_CAST",
 

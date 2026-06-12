@@ -8,6 +8,43 @@ if(!token){
 const toast =
 document.getElementById("toast");
 
+let currentUser = null;
+
+async function fetchProfile() {
+  try {
+    const response = await fetch(buildApiUrl("/api/auth/profile"), {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch profile");
+    }
+
+    currentUser = await response.json();
+    applyAdminView();
+  } catch (error) {
+    console.error(error);
+    showToast("Unable to load admin profile");
+  }
+}
+
+function applyAdminView() {
+  const groupSelect = document.getElementById("group");
+
+  if (!currentUser) {
+    return;
+  }
+
+  if (currentUser.role !== "superadmin") {
+    if (groupSelect) {
+      groupSelect.value = currentUser.group || "";
+      groupSelect.disabled = true;
+    }
+  }
+}
+
 function showToast(message){
 
   toast.innerText = message;
@@ -636,9 +673,11 @@ document.getElementById(
 
 // INITIAL LOAD
 
-fetchStats();
+fetchProfile().then(() => {
+  fetchStats();
+  fetchAuditLogs();
+});
 
-fetchAuditLogs();
 document.getElementById(
   "resultsBtn"
 ).addEventListener(

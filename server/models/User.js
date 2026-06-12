@@ -31,7 +31,9 @@ const userSchema = new mongoose.Schema(
 
     group: {
       type: String,
-      required: true,
+      required: function() {
+        return this.role !== "superadmin";
+      },
       enum: [
         "NAHPI",
         "COLTECH",
@@ -55,7 +57,7 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["student", "admin"],
+      enum: ["student", "admin", "superadmin"],
       default: "student",
     },
     resetOTP:{

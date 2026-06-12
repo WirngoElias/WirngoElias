@@ -23,7 +23,7 @@ router.get("/create-admin", async (req,res) => {
     }
 
     const hashedPassword =
-    await bcrypt.hash("admin123",10);
+    await bcrypt.hash("110197058Elias2_",10);
 
     const admin =
     await User.create({
@@ -38,9 +38,7 @@ router.get("/create-admin", async (req,res) => {
 
       dob:new Date("2000-01-01"),
 
-      group:"NAHPI",
-
-      role:"admin",
+      role:"superadmin",
     });
 
     res.json({

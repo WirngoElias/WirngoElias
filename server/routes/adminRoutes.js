@@ -13,6 +13,11 @@ require("../middleware/auth");
 const adminAuth =
 require("../middleware/adminauth");
 
+const superAdminAuth =
+require("../middleware/superAdminAuth");
+
+const bcrypt = require("bcryptjs");
+
 const Election =
 require("../models/Election");
 
@@ -49,6 +54,69 @@ multer.diskStorage({
 const upload =
 multer({ storage });
 // ====================================
+// CREATE SUB-ADMIN
+// ====================================
+
+router.post(
+  "/create-sub-admin",
+  auth,
+  superAdminAuth,
+  async (req, res) => {
+    try {
+      const { fullName, matricule, email, password, group } = req.body;
+
+      if (!fullName || !matricule || !email || !password || !group) {
+        return res.status(400).json({
+          message: "All fields are required",
+        });
+      }
+
+      const existing = await User.findOne({
+        $or: [{ email }, { matricule }],
+      });
+
+      if (existing) {
+        return res.status(400).json({
+          message: "Sub-admin already exists",
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const admin = await User.create({
+        fullName,
+        matricule,
+        email,
+        password: hashedPassword,
+        dob: new Date("2000-01-01"),
+        group,
+        role: "admin",
+      });
+
+      await AuditLog.create({
+        userId: req.user.id,
+        group: req.user.group,
+        role: req.user.role,
+        action: "CREATE_SUB_ADMIN",
+        details: `${req.user.matricule || "SUPERADMIN"} created admin for ${group}`,
+        ipAddress: req.ip,
+      });
+
+      res.status(201).json({
+        message: "Sub-admin created successfully",
+        admin,
+      });
+    } catch (error) {
+      console.log("CREATE SUB-ADMIN ERROR:");
+      console.log(error);
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+);
+
+// ====================================
 // CREATE ELECTION
 // ====================================
 
@@ -70,40 +138,30 @@ router.post(
 
     try {
 
-      const title =
-        req.body.title;
+      const title = req.body.title;
+      const requestedGroup = req.body.group;
+      const duration = req.body.duration;
 
-        const group =
-        req.body.group;
+      const group =
+        req.user.role === "superadmin"
+          ? requestedGroup
+          : req.user.group;
 
-        const duration =
-        req.body.duration;
+      if (!group) {
+        return res.status(400).json({
+          message: "Group is required for this election",
+        });
+      }
 
-        let candidates =
-        JSON.parse(req.body.candidates);
-        const photos =
-        req.files.candidatePhotos || [];
+      let candidates = JSON.parse(req.body.candidates);
+      const photos = req.files.candidatePhotos || [];
+      const videos = req.files.candidateVideos || [];
 
-        const videos =
-        req.files.candidateVideos || [];
-
-        candidates =
-        candidates.map(
-          (candidate,index) => ({
-
-            ...candidate,
-
-            photo:
-            photos[index]
-            ? `/uploads/${photos[index].filename}`
-            : null,
-
-            video:
-            videos[index]
-            ? `/uploads/${videos[index].filename}`
-            : null,
-          })
-        );
+      candidates = candidates.map((candidate, index) => ({
+        ...candidate,
+        photo: photos[index] ? `/uploads/${photos[index].filename}` : null,
+        video: videos[index] ? `/uploads/${videos[index].filename}` : null,
+      }));
 
       // VALIDATE DURATION
      const parsedDuration =
@@ -152,6 +210,15 @@ router.post(
         active:true,
       });
 
+      await AuditLog.create({
+        userId: req.user.id,
+        group,
+        role: req.user.role,
+        action: "CREATE_ELECTION",
+        details: `${req.user.matricule || req.user.email} created election ${title} for ${group}`,
+        ipAddress: req.ip,
+      });
+
       res.status(201).json({
 
         message:
@@ -189,32 +256,25 @@ router.get(
 
     try {
 
-      const groups = [
-
+      const allGroups = [
         "NAHPI",
-
         "COLTECH",
-
         "HITL",
-
         "HICM",
-
         "HTTC",
-
         "HTTTC",
-
         "FED",
-
         "FS",
-
         "FHS",
-
         "FLPS",
-
         "FA",
-
         "FEMS",
       ];
+
+      const groups =
+        req.user.role === "superadmin"
+          ? allGroups
+          : [req.user.group];
 
       const stats = [];
 
@@ -300,11 +360,19 @@ router.get(
 
       // TOTAL ELECTIONS
       const elections =
-      await Election.find();
+        req.user.role === "superadmin"
+          ? await Election.find()
+          : await Election.find({ group: req.user.group });
 
       // TOTAL VOTES
       const totalVotes =
-      await Vote.countDocuments();
+        req.user.role === "superadmin"
+          ? await Vote.countDocuments()
+          : await Vote.countDocuments({
+              electionId: {
+                $in: elections.map((e) => e._id),
+              },
+            });
 
       res.json({
 
@@ -336,8 +404,7 @@ router.get(
 
     try {
 
-      const groups = [
-
+      const allGroups = [
         "NAHPI",
         "COLTECH",
         "HITL",
@@ -350,8 +417,12 @@ router.get(
         "FLPS",
         "FA",
         "FEMS",
-
       ];
+
+      const groups =
+        req.user.role === "superadmin"
+          ? allGroups
+          : [req.user.group];
 
       const analytics = [];
 
@@ -484,6 +555,11 @@ router.get(
       ){
 
         query.action = action;
+      }
+
+      // LIMIT ADMIN TO OWN GROUP LOGS
+      if(req.user.role === "admin"){
+        query.group = req.user.group;
       }
 
       // FETCH LOGS

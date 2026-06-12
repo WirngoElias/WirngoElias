@@ -138,22 +138,16 @@ router.get(
 
       let elections = [];
 
-      // ADMIN SEES ALL RESULTS
-      if(user.role === "admin"){
-
-        elections =
-        await Election.find().sort({ startTime: -1 });
-
-      }
-
-      // NORMAL USER SEES ONLY GROUP RESULTS
-      else{
-
-        elections =
-        await Election.find({
-          group:user.group,
+      if (user.role === "superadmin") {
+        elections = await Election.find().sort({ startTime: -1 });
+      } else if (user.role === "admin") {
+        elections = await Election.find({
+          group: user.group,
         }).sort({ startTime: -1 });
-
+      } else {
+        elections = await Election.find({
+          group: user.group,
+        }).sort({ startTime: -1 });
       }
 
       const formattedResults =
