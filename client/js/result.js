@@ -80,7 +80,28 @@ async function getProfile(){
 // FETCH RESULTS
 // =========================
 
+function renderResultsLoading() {
+  if (!container) return;
+  container.innerHTML = `
+    <div class="result-card result-loading">
+      <div class="spinner"></div>
+      <h2>Loading results...</h2>
+    </div>
+  `;
+}
+
+function renderResultsError(message) {
+  if (!container) return;
+  container.innerHTML = `
+    <div class="result-card result-loading">
+      <h2>${message}</h2>
+    </div>
+  `;
+}
+
 async function fetchResults(){
+
+  renderResultsLoading();
 
   try {
 
@@ -95,6 +116,13 @@ async function fetchResults(){
 
     const results =
     await response.json();
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Results API error:", errorData);
+      renderResultsError("Failed to load results. Please refresh.");
+      return;
+    }
 
     allResults = results.sort((a,b) => {
       const aTime = a.startTime
@@ -120,7 +148,8 @@ async function fetchResults(){
 
   } catch (error) {
 
-    console.log(error);
+    console.error(error);
+    renderResultsError("Unable to load results. Check your connection.");
 
   }
 }

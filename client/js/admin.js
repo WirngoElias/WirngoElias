@@ -9,6 +9,9 @@ const toast =
 document.getElementById("toast");
 
 let currentUser = null;
+const subadminSection = document.getElementById("subadminSection");
+const createSubAdminForm = document.getElementById("createSubAdminForm");
+const createSubAdminButton = document.getElementById("createSubAdminBtn");
 
 async function fetchProfile() {
   try {
@@ -42,6 +45,25 @@ function applyAdminView() {
       groupSelect.value = currentUser.group || "";
       groupSelect.disabled = true;
     }
+  }
+
+  if (subadminSection) {
+    subadminSection.style.display =
+      currentUser.role === "superadmin"
+        ? "block"
+        : "none";
+  }
+}
+
+function setButtonLoading(button, isLoading, text) {
+  if (!button) return;
+  button.disabled = isLoading;
+  if (isLoading) {
+    button.innerHTML = `<span class="button-spinner"></span> ${text}`;
+    button.style.opacity = "0.75";
+  } else {
+    button.innerHTML = text;
+    button.style.opacity = "1";
   }
 }
 
@@ -322,7 +344,12 @@ formData.append(
     }
   );
 
+  const createElectionButton = document.querySelector(
+    "#electionForm button[type='submit']"
+  );
+
   try {
+    setButtonLoading(createElectionButton, true, "Creating...");
 
     const response =
     await fetch(
@@ -346,7 +373,6 @@ formData.append(
     showToast(
       data.message
     );
-
   } catch(error){
 
     console.log(error);
@@ -354,8 +380,52 @@ formData.append(
     showToast(
       "Server error"
     );
+  } finally {
+    setButtonLoading(createElectionButton, false, "Create Election");
   }
 });
+
+if (createSubAdminForm) {
+  createSubAdminForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const fullName = document.getElementById("subadminFullName").value;
+    const matricule = document.getElementById("subadminMatricule").value;
+    const email = document.getElementById("subadminEmail").value;
+    const password = document.getElementById("subadminPassword").value;
+    const group = document.getElementById("subadminGroup").value;
+
+    if (!fullName || !matricule || !email || !password || !group) {
+      showToast("All fields are required");
+      return;
+    }
+
+    setButtonLoading(createSubAdminButton, true, "Creating...");
+
+    try {
+      const response = await fetch(buildApiUrl("/api/admin/create-sub-admin"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({ fullName, matricule, email, password, group }),
+      });
+
+      const data = await response.json();
+      showToast(data.message || "Sub-admin created");
+
+      if (response.ok) {
+        createSubAdminForm.reset();
+      }
+    } catch (error) {
+      console.error(error);
+      showToast("Failed to create sub-admin");
+    } finally {
+      setButtonLoading(createSubAdminButton, false, "Create Sub-admin");
+    }
+  });
+}
 
 
 // FETCH STATS
@@ -363,6 +433,8 @@ formData.append(
 async function fetchStats(){
 
   try {
+
+    renderStatsLoading();
 
     const response = await fetch(
       buildApiUrl("/api/admin/stats"),
@@ -484,6 +556,30 @@ async function fetchStats(){
   }
 }
 
+function renderStatsLoading() {
+  const container = document.getElementById("statsContainer");
+  if (!container) return;
+  container.innerHTML = `
+    <div class="stat-card admin-loading">
+      <div class="spinner"></div>
+      <h3>Loading stats...</h3>
+    </div>
+  `;
+}
+
+function renderAuditLoading() {
+  const tbody = document.getElementById("auditTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="5" class="loading-row">
+        <div class="spinner"></div>
+        Loading audit logs...
+      </td>
+    </tr>
+  `;
+}
+
 // =========================
 // AUDIT LOGS
 // =========================
@@ -495,6 +591,8 @@ async function fetchAuditLogs(page = 1){
   try {
 
     currentPage = page;
+
+    renderAuditLoading();
 
     const search =
     document.getElementById(

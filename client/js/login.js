@@ -1,4 +1,13 @@
 const loginForm = document.getElementById("loginForm");
+const loginButton = loginForm.querySelector("button[type='submit']");
+
+function setLoginLoading(isLoading) {
+  if (!loginButton) return;
+  loginButton.disabled = isLoading;
+  loginButton.innerHTML = isLoading
+    ? `<span class="button-spinner"></span>Logging in...`
+    : "Login";
+}
 
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get("registered") === "1") {
@@ -7,6 +16,8 @@ if (urlParams.get("registered") === "1") {
 
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  setLoginLoading(true);
 
   const matricule = document.getElementById("matricule").value;
   const password = document.getElementById("password").value;
@@ -42,5 +53,8 @@ loginForm.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error("Fetch error:", error);
     showToast("Cannot connect to server. Is your backend running on port 5000?", 'error');
+  }
+  finally {
+    setLoginLoading(false);
   }
 });

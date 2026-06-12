@@ -154,6 +154,68 @@
 
     </section>
 
+    <section
+      id="subadminSection"
+      class="create-election"
+      style="display:none;"
+    >
+
+      <h2>Create Sub-admin</h2>
+
+      <form id="createSubAdminForm">
+
+        <input
+          type="text"
+          id="subadminFullName"
+          placeholder="Full Name"
+          required
+        />
+
+        <input
+          type="text"
+          id="subadminMatricule"
+          placeholder="Matricule"
+          required
+        />
+
+        <input
+          type="email"
+          id="subadminEmail"
+          placeholder="Email"
+          required
+        />
+
+        <input
+          type="password"
+          id="subadminPassword"
+          placeholder="Password"
+          required
+        />
+
+        <select id="subadminGroup" required>
+          <option value="">Select School / Faculty</option>
+          <option>NAHPI</option>
+          <option>COLTECH</option>
+          <option>HITL</option>
+          <option>HICM</option>
+          <option>HTTC</option>
+          <option>HTTTC</option>
+          <option>FED</option>
+          <option>FS</option>
+          <option>FHS</option>
+          <option>FLPS</option>
+          <option>FA</option>
+          <option>FEMS</option>
+        </select>
+
+        <button type="submit" id="createSubAdminBtn">
+          Create Sub-admin
+        </button>
+
+      </form>
+
+    </section>
+
     <!-- STATISTICS -->
 
     <!-- <section class="analytics">
@@ -198,6 +260,14 @@
 
         <option value="FRAUD_ATTEMPT">
           Fraud Attempt
+        </option>
+
+        <option value="CREATE_ELECTION">
+          Create Election
+        </option>
+
+        <option value="CREATE_SUB_ADMIN">
+          Create Sub-admin
         </option>
 
       </select>
