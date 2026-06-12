@@ -400,6 +400,8 @@ router.get(
 );
 router.get(
   "/analytics",
+  auth,
+  adminAuth,
   async (req,res) => {
 
     try {

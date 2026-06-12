@@ -71,6 +71,49 @@ body{
   overflow:hidden;
 }
 
+.analytics-error{
+  background: rgba(255, 59, 48, 0.15);
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  border-radius: 24px;
+  color: #fee2e2;
+  padding: 30px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.analytics-loading{
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 180px;
+  color: #cbd5e1;
+}
+
+.spinner{
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255,255,255,0.15);
+  border-top: 5px solid #38bdf8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
 .analytics-card:hover{
   transform:translateY(-4px);
 

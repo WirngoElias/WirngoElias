@@ -12,6 +12,8 @@ document.getElementById(
 
 async function fetchAnalytics(){
 
+  renderAnalyticsLoading();
+
   try{
 
     const response =
@@ -27,13 +29,43 @@ async function fetchAnalytics(){
     const data =
     await response.json();
 
+    if (!response.ok) {
+      console.error("Analytics API error:", data);
+      renderAnalyticsError("Failed to load analytics. Please refresh the page.");
+      return;
+    }
+
     renderAnalytics(data);
 
   }catch(error){
 
-    console.log(error);
+    console.error("Analytics fetch failed:", error);
+    renderAnalyticsError("Unable to load analytics. Check your connection.");
 
   }
+}
+
+function renderAnalyticsError(message) {
+  container.innerHTML = "";
+
+  const errorCard = document.createElement("div");
+  errorCard.classList.add("analytics-error");
+  errorCard.textContent = message;
+
+  container.appendChild(errorCard);
+}
+
+function renderAnalyticsLoading() {
+  container.innerHTML = "";
+
+  const loadingCard = document.createElement("div");
+  loadingCard.classList.add("analytics-loading");
+  loadingCard.innerHTML = `
+    <div class="spinner"></div>
+    <p>Loading analytics...</p>
+  `;
+
+  container.appendChild(loadingCard);
 }
 
 // =========================
@@ -43,6 +75,12 @@ async function fetchAnalytics(){
 function renderAnalytics(data){
 
   container.innerHTML = "";
+
+  if (!Array.isArray(data)) {
+    console.error("Unexpected analytics response:", data);
+    renderAnalyticsError("Analytics data is unavailable.");
+    return;
+  }
 
   data.forEach((group)=>{
 
