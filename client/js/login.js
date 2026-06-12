@@ -27,11 +27,9 @@ loginForm.addEventListener("submit", async (e) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Improved Redirect Logic
-      // Check if role is in data or data.user
       const userRole = data.role || (data.user && data.user.role);
 
-      if (userRole === "admin") {
+      if (userRole === "admin" || userRole === "superadmin") {
         showToast('Login successful', 'success');
         window.location.href = "admin.html";
       } else {
