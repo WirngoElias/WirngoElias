@@ -63,13 +63,43 @@ router.post(
   superAdminAuth,
   async (req, res) => {
     try {
-      const { fullName, matricule, email, password, group } = req.body;
+        const { fullName, matricule, email, password, group } = req.body;
 
-      if (!fullName || !matricule || !email || !password || !group) {
+        if (!fullName || !matricule || !email || !password || !group) {
         return res.status(400).json({
           message: "All fields are required",
         });
       }
+
+        // Validate matricule matches selected group (same rules as registration)
+        const schoolCodes = {
+          "NAHPI": "NA",
+          "COLTECH": "CO",
+          "HITL": "HI",
+          "HICM": "HI",
+          "HTTC": "HT",
+          "HTTTC": "HT",
+          "FED": "FE",
+          "FS": "FS",
+          "FHS": "FH",
+          "FLPS": "FL",
+          "FA": "FA",
+          "FEMS": "FE",
+        };
+
+        if (!matricule.startsWith("UBa") || matricule.length !== 10) {
+          return res.status(400).json({ message: "Invalid matricule format" });
+        }
+
+        const remaining = matricule.slice(3);
+        const schoolCode = remaining.slice(2, 4);
+        const expectedCode = schoolCodes[group];
+
+        if (!expectedCode || schoolCode !== expectedCode) {
+          return res.status(400).json({
+            message: `School code '${schoolCode}' does not match selected school/faculty. Expected '${expectedCode}' for ${group}`,
+          });
+        }
 
       const existing = await User.findOne({
         $or: [{ email }, { matricule }],

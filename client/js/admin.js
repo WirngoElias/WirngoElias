@@ -33,6 +33,49 @@ async function fetchProfile() {
   }
 }
 
+function showSection(id){
+  const sections = [
+    document.getElementById('createElectionSection'),
+    document.getElementById('subadminSection'),
+    document.getElementById('auditSection') || document.querySelector('.audit-section')
+  ];
+
+  sections.forEach(s => {
+    if(!s) return;
+    if(s.id === id) s.style.display = 'block';
+    else s.style.display = 'none';
+  });
+}
+
+function validateMatriculeForGroup(matricule, group){
+  if(!matricule || !group) return false;
+  if(!matricule.startsWith('UBa')) return false;
+  if(matricule.length !== 10) return false;
+
+  const remaining = matricule.slice(3);
+  const schoolCode = remaining.slice(2,4);
+
+  const schoolCodes = {
+    "NAHPI": "NA",
+    "COLTECH": "CO",
+    "HITL": "HI",
+    "HICM": "HI",
+    "HTTC": "HT",
+    "HTTTC": "HT",
+    "FED": "FE",
+    "FS": "FS",
+    "FHS": "FH",
+    "FLPS": "FL",
+    "FA": "FA",
+    "FEMS": "FE",
+  };
+
+  const expected = schoolCodes[group];
+  if(!expected) return false;
+
+  return schoolCode === expected;
+}
+
 function applyAdminView() {
   const groupSelect = document.getElementById("group");
 
@@ -397,6 +440,12 @@ if (createSubAdminForm) {
 
     if (!fullName || !matricule || !email || !password || !group) {
       showToast("All fields are required");
+      return;
+    }
+
+    // validate matricule <-> group mapping
+    if(!validateMatriculeForGroup(matricule, group)){
+      showToast("Matricule does not match selected school/faculty");
       return;
     }
 
@@ -835,3 +884,19 @@ document
     "./analytics.html";
   }
 );
+
+// Sidebar nav handlers
+const createElectionNav = document.getElementById('createElectionNav');
+const createSubAdminNav = document.getElementById('createSubAdminNav');
+
+if(createElectionNav){
+  createElectionNav.addEventListener('click', () => {
+    showSection('createElectionSection');
+  });
+}
+
+if(createSubAdminNav){
+  createSubAdminNav.addEventListener('click', () => {
+    showSection('subadminSection');
+  });
+}
