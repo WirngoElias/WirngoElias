@@ -10,6 +10,8 @@ require("../utils/sendEmail");
 const auth =
 require("../middleware/auth");
 
+const AuditLog = require("../models/Auditlog");
+
 const router = express.Router();
 
 const validGroups = [
@@ -172,24 +174,101 @@ router.post("/login", async (req, res) => {
   try {
     const { matricule, password } = req.body;
 
+    const ipAddress = req.ip;
+
     const user = await User.findOne({ matricule });
 
+    // If user not found, log attempt by IP and detect rapid failures
     if (!user) {
+      await AuditLog.create({
+        group: null,
+        role: null,
+        action: "LOGIN_ATTEMPT",
+        details: `Failed login attempt for ${matricule}`,
+        ipAddress,
+      });
+
+      const windowMs = 2 * 60 * 1000; // 2 minutes
+      const threshold = 6;
+
+      const recent = await AuditLog.countDocuments({
+        ipAddress,
+        action: "LOGIN_ATTEMPT",
+        createdAt: { $gte: new Date(Date.now() - windowMs) },
+      });
+
+      if (recent >= threshold) {
+        await AuditLog.create({
+          group: null,
+          role: null,
+          action: "FRAUD_ATTEMPT",
+          details: `Multiple failed login attempts for ${matricule} from ${ipAddress}`,
+          ipAddress,
+        });
+      }
+
       return res.status(400).json({
         message: "Invalid credentials",
       });
     }
 
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
+    // Check for account lock
+    if (user.lockUntil && user.lockUntil > Date.now()) {
+      return res.status(403).json({
+        message: `Account locked until ${new Date(user.lockUntil).toISOString()}`,
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
+      // increment failed attempts
+      user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
+
+      const lockThreshold = 6; // attempts
+      const lockDurationMs = 15 * 60 * 1000; // 15 minutes
+
+      if (user.failedLoginAttempts >= lockThreshold) {
+        user.lockUntil = new Date(Date.now() + lockDurationMs);
+        await AuditLog.create({
+          userId: user._id,
+          group: user.group,
+          role: user.role,
+          action: "FRAUD_ATTEMPT",
+          details: `Account locked due to multiple failed logins for ${user.matricule}`,
+          ipAddress,
+        });
+      }
+
+      await user.save();
+
+      await AuditLog.create({
+        userId: user._id,
+        group: user.group,
+        role: user.role,
+        action: "LOGIN_ATTEMPT",
+        details: `Failed login for ${user.matricule}: invalid password`,
+        ipAddress,
+      });
+
       return res.status(400).json({
         message: "Invalid credentials",
       });
     }
+
+    // Successful login - reset counters and log success
+    user.failedLoginAttempts = 0;
+    user.lockUntil = null;
+    await user.save();
+
+    await AuditLog.create({
+      userId: user._id,
+      group: user.group,
+      role: user.role,
+      action: "LOGIN_SUCCESS",
+      details: `Successful login for ${user.matricule}`,
+      ipAddress,
+    });
 
     const token = jwt.sign(
       {

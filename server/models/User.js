@@ -55,6 +55,16 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
+    // Failed login tracking and lockout
+    failedLoginAttempts: {
+      type: Number,
+      default: 0,
+    },
+
+    lockUntil: {
+      type: Date,
+    },
+
     role: {
       type: String,
       enum: ["student", "admin", "superadmin"],

@@ -116,6 +116,25 @@ router.post(
   }
 );
 
+// GET SUBADMINS (for superadmin UI filter)
+router.get(
+  "/subadmins",
+  auth,
+  superAdminAuth,
+  async (req, res) => {
+    try {
+      const admins = await User.find({ role: "admin" }).select(
+        "_id matricule fullName group"
+      );
+
+      res.json(admins);
+    } catch (error) {
+      console.log("SUBADMINS ERROR:", error);
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 // ====================================
 // CREATE ELECTION
 // ====================================
@@ -562,6 +581,15 @@ router.get(
       // LIMIT ADMIN TO OWN GROUP LOGS
       if(req.user.role === "admin"){
         query.group = req.user.group;
+      }
+
+      // FILTER BY SPECIFIC USER (subadmin) if requested
+      if(req.query.userId){
+        try{
+          query.userId = req.query.userId;
+        }catch(e){
+          // ignore invalid id
+        }
       }
 
       // FETCH LOGS

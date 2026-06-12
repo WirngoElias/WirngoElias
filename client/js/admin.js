@@ -580,6 +580,35 @@ function renderAuditLoading() {
   `;
 }
 
+async function fetchSubadmins() {
+  const select = document.getElementById("filterUserSelect");
+  if (!select) return;
+
+  try {
+    const resp = await fetch(buildApiUrl("/api/admin/subadmins"), {
+      headers: { Authorization: token },
+    });
+
+    if (!resp.ok) return;
+
+    const list = await resp.json();
+
+    // populate
+    select.innerHTML = '<option value="">All Subadmins</option>';
+    list.forEach((u) => {
+      const opt = document.createElement("option");
+      opt.value = u._id;
+      opt.text = `${u.matricule} - ${u.fullName} (${u.group})`;
+      select.appendChild(opt);
+    });
+
+    select.style.display = "inline-block";
+    select.addEventListener("change", () => fetchAuditLogs(1));
+  } catch (error) {
+    console.error("Failed to load subadmins", error);
+  }
+}
+
 // =========================
 // AUDIT LOGS
 // =========================
@@ -604,16 +633,23 @@ async function fetchAuditLogs(page = 1){
       "filterAction"
     ).value;
 
-    const response = await fetch(
+    const userId = document.getElementById("filterUserSelect")
+      ? document.getElementById("filterUserSelect").value
+      : "";
 
-      buildApiUrl(`/api/admin/audit-logs?page=${page}&limit=10&search=${search}&action=${action}`),
+    let url = `/api/admin/audit-logs?page=${page}&limit=10&search=${encodeURIComponent(
+      search
+    )}&action=${encodeURIComponent(action)}`;
 
-      {
-        headers:{
-          Authorization:token,
-        },
-      }
-    );
+    if (userId) {
+      url += `&userId=${encodeURIComponent(userId)}`;
+    }
+
+    const response = await fetch(buildApiUrl(url), {
+      headers: {
+        Authorization: token,
+      },
+    });
 
     if(!response.ok){
 
@@ -773,6 +809,10 @@ document.getElementById(
 
 fetchProfile().then(() => {
   fetchStats();
+  // load subadmins only for superadmin
+  if (currentUser && currentUser.role === "superadmin") {
+    fetchSubadmins();
+  }
   fetchAuditLogs();
 });
 
