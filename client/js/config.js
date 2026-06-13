@@ -13,11 +13,8 @@ function buildApiUrl(path) {
     return path;
   }
 
-  if (!API_BASE_URL) {
-    return path;
-  }
-
-  return `${API_BASE_URL.replace(/\/$/, "")}${path}`;
+  const base = API_BASE_URL || window.location.origin;
+  return `${base.replace(/\/$/, "")}${path}`;
 }
 
 function setupPasswordToggle() {
@@ -36,7 +33,8 @@ function setupPasswordToggle() {
     button.type = "button";
     button.className = BUTTON_CLASS;
     button.setAttribute("aria-label", "Show password");
-    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;\n    wrapper.appendChild(button);
+    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    wrapper.appendChild(button);
 
     let persistentVisible = false;
     let skipToggle = false;
