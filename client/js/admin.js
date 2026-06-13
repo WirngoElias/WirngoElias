@@ -83,10 +83,19 @@ function applyAdminView() {
     return;
   }
 
+  const createSubAdminNav = document.getElementById('createSubAdminNav');
+
   if (currentUser.role !== "superadmin") {
     if (groupSelect) {
       groupSelect.value = currentUser.group || "";
       groupSelect.disabled = true;
+    }
+    if (createSubAdminNav) {
+      createSubAdminNav.style.display = 'none';
+    }
+  } else {
+    if (createSubAdminNav) {
+      createSubAdminNav.style.display = 'list-item';
     }
   }
 
