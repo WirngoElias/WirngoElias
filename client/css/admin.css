@@ -119,10 +119,12 @@ body.light{
 
 .password-toggle-field {
   position: relative;
+  display: block;
 }
 
 .password-toggle-field input {
   padding-right: 50px;
+  width: 100%;
 }
 
 .password-toggle-btn {
@@ -141,6 +143,10 @@ body.light{
   justify-content: center;
   border-radius: 50%;
   transition: background 0.2s ease, color 0.2s ease;
+  padding: 0;
+  min-width: 38px;
+  line-height: 1;
+  font: inherit;
 }
 
 .password-toggle-btn:hover {
@@ -150,6 +156,14 @@ body.light{
 
 .password-toggle-btn.visible {
   color: #38bdf8;
+}
+
+.password-toggle-field input {
+  padding-right: 50px;
+}
+
+.password-toggle-field button {
+  width: 38px;
 }
 
 .candidate-builder{
