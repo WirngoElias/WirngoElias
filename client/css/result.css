@@ -184,6 +184,40 @@ body{
   justify-content:center;
 }
 
+.results-search {
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.school-search-container {
+  flex: 1 1 320px;
+  min-width: 240px;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(30, 41, 59, 0.95);
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+.sort-controls label {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.sort-controls select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: #1e293b;
+  color: white;
+  min-width: 160px;
+}
+
 .results-search input{
 
   width:100%;

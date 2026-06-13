@@ -17,6 +17,20 @@ const schoolSearch =
 document.getElementById(
   "schoolSearch"
 );
+const schoolSearchContainer =
+document.getElementById(
+  "schoolSearchContainer"
+);
+
+const sortControls =
+document.getElementById(
+  "sortControls"
+);
+
+const sortSelect =
+document.getElementById(
+  "sortSelect"
+);
 
 let currentUserRole = "";
 
@@ -45,26 +59,19 @@ async function getProfile(){
     currentUserRole =
     user.role;
 
-    // SHOW SEARCH ONLY FOR ADMIN
-    if(
-      currentUserRole &&
-      currentUserRole === "admin"
-    ){
-
-      if(searchContainer){
-
-        searchContainer.style.display =
-        "block";
-      }
+    if (sortControls) {
+      sortControls.style.display =
+        currentUserRole === "superadmin" ||
+        currentUserRole === "admin"
+          ? "flex"
+          : "none";
     }
 
-    else{
-
-      if(searchContainer){
-
-        searchContainer.style.display =
-        "none";
-      }
+    if (schoolSearchContainer) {
+      schoolSearchContainer.style.display =
+        currentUserRole === "superadmin"
+          ? "block"
+          : "none";
     }
 
     // LOAD RESULTS
@@ -134,15 +141,11 @@ async function fetchResults(){
       return bTime - aTime;
     });
 
-    // ADMIN FILTER
-    if(currentUserRole === "admin"){
-
+    if (currentUserRole === "superadmin") {
       applyFilter();
-    }
-
-    // NORMAL USER
-    else{
-
+    } else if (currentUserRole === "admin") {
+      renderSortedResults();
+    } else {
       renderResults(allResults);
     }
 
@@ -177,8 +180,31 @@ function applyFilter(){
   );
 
   renderResults(
-    filteredResults
+    sortResults(filteredResults)
   );
+}
+
+function sortResults(results) {
+  if (!sortSelect) return results;
+
+  const value = sortSelect.value || "date-desc";
+  return results.slice().sort((a, b) => {
+    if (value === "name-asc" || value === "name-desc") {
+      const aName = (a.title || "").toLowerCase();
+      const bName = (b.title || "").toLowerCase();
+      const direction = value === "name-asc" ? 1 : -1;
+      return aName.localeCompare(bName) * direction;
+    }
+
+    const aTime = a.startTime ? new Date(a.startTime) : new Date(a.endTime || 0);
+    const bTime = b.startTime ? new Date(b.startTime) : new Date(b.endTime || 0);
+    const direction = value === "date-asc" ? 1 : -1;
+    return (aTime - bTime) * direction;
+  });
+}
+
+function renderSortedResults() {
+  renderResults(sortResults(allResults));
 }
 
 // =========================
@@ -424,6 +450,16 @@ if(schoolSearch){
     "input",
     applyFilter
   );
+}
+
+if (sortSelect) {
+  sortSelect.addEventListener("change", () => {
+    if (currentUserRole === "superadmin") {
+      applyFilter();
+    } else if (currentUserRole === "admin") {
+      renderSortedResults();
+    }
+  });
 }
 
 // =========================

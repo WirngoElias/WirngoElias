@@ -41,12 +41,23 @@ Election Results
     class="results-search"
     id="resultsSearch"
   >
+    <div class="school-search-container" id="schoolSearchContainer" style="display:none;">
+      <input
+        type="text"
+        id="schoolSearch"
+        placeholder="Search school or faculty..."
+      />
+    </div>
 
-    <input
-      type="text"
-      id="schoolSearch"
-      placeholder="Search school or faculty..."
-    />
+    <div class="sort-controls" id="sortControls" style="display:none;">
+      <label for="sortSelect">Sort by</label>
+      <select id="sortSelect">
+        <option value="date-desc">Date newest</option>
+        <option value="date-asc">Date oldest</option>
+        <option value="name-asc">Name A-Z</option>
+        <option value="name-desc">Name Z-A</option>
+      </select>
+    </div>
 
   </div>
 
