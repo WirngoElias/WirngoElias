@@ -119,51 +119,51 @@ body.light{
 
 .password-toggle-field {
   position: relative;
-  display: block;
+  display: inline-block;
+  width: 100%;
 }
 
 .password-toggle-field input {
   padding-right: 50px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-.password-toggle-btn {
+.create-election button.password-toggle-btn,
+.password-toggle-field button.password-toggle-btn {
   position: absolute;
-  right: 16px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  color: #cbd5e1;
+  border: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #cbd5e1 !important;
   cursor: pointer;
-  width: 38px;
-  height: 38px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+  width: 38px !important;
+  height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
   transition: background 0.2s ease, color 0.2s ease;
-  padding: 0;
-  min-width: 38px;
-  line-height: 1;
-  font: inherit;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: 38px !important;
+  line-height: 1 !important;
+  font: inherit !important;
+  box-shadow: none !important;
 }
 
-.password-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #38bdf8;
+.create-election button.password-toggle-btn:hover,
+.password-toggle-field button.password-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #38bdf8 !important;
 }
 
-.password-toggle-btn.visible {
-  color: #38bdf8;
-}
-
-.password-toggle-field input {
-  padding-right: 50px;
-}
-
-.password-toggle-field button {
-  width: 38px;
+.create-election button.password-toggle-btn.visible,
+.password-toggle-field button.password-toggle-btn.visible {
+  color: #38bdf8 !important;
 }
 
 .candidate-builder{
